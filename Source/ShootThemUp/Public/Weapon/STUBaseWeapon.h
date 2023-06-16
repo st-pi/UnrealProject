@@ -34,11 +34,28 @@ public:
 	bool TryToAddAmmo(int32 ClipsAmount);
 	bool IsAmmoEmpty() const;
 	bool IsAmmoFull() const;
-	virtual void Zoom(bool Enabled);
+	void Zoom(bool Enabled);
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	virtual void MakeShot();
+
+	virtual bool GetTraceData(FVector& TraceStart, FVector& TraceEnd);
+	void MakeHit(FHitResult& HitResult, const FVector& TraceStart, const FVector& TraceEnd);
+
+	FVector GetMuzzleWorldLocation() const;
+	bool GetPlayerViewPoint(FVector& ViewLocation, FRotator& ViewRotation) const;
+
+	void DecreaseAmmo();
+	bool IsClipEmpty() const;
+
+	UNiagaraComponent* SpawnMuzzleFX();
+
+	AController* GetController() const;
+
+protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
 	USkeletalMeshComponent* WeaponMeshComponent;
@@ -52,6 +69,14 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Weapon")
 	FAmmoData DefaultAmmo;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Weapon")
+	bool ZoomAvailable = true;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Weapon", meta = (EditCondition = "ZoomAvailable"))
+	float FOVZoomAngle = 50.0f;
+
+	float DefaultCameraFOV = 90.0f;
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "UI")
 	FWeaponUIData UIData;
 
@@ -60,19 +85,6 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Sound")
 	USoundCue* FireSound;
-protected:
-	virtual void MakeShot();
-
-	virtual bool GetTraceData(FVector& TraceStart, FVector& TraceEnd);
-	void MakeHit(FHitResult& HitResult, const FVector& TraceStart, const FVector& TraceEnd);
-
-	FVector GetMuzzleWorldLocation() const;
-	bool GetPlayerViewPoint(FVector& ViewLocation, FRotator& ViewRotation) const;
-
-	void DecreaseAmmo();
-	bool IsClipEmpty() const;
-
-	UNiagaraComponent* SpawnMuzzleFX();
 
 private:
 	FAmmoData CurrentAmmo;

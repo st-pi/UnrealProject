@@ -75,6 +75,8 @@ void ASTUPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInput
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ASTUPlayerCharacter::Jump);
 	PlayerInputComponent->BindAction("Run", IE_Pressed, this, &ASTUPlayerCharacter::OnStartSprint);
 	PlayerInputComponent->BindAction("Run", IE_Released, this, &ASTUPlayerCharacter::OnStopSprint);
+	PlayerInputComponent->BindAction("ChangeCamera", IE_Pressed, this, &ASTUPlayerCharacter::ChangeCameraPerspective);
+
 	PlayerInputComponent->BindAction("Fire", IE_Pressed, WeaponComponent, &USTUWeaponComponent::StartFire);
 	PlayerInputComponent->BindAction("Fire", IE_Released, WeaponComponent, &USTUWeaponComponent::StopFire);
 	PlayerInputComponent->BindAction("NextWeapon", IE_Pressed, WeaponComponent, &USTUWeaponComponent::NextWeapon);
@@ -109,6 +111,10 @@ void ASTUPlayerCharacter::OnStartSprint()
 void ASTUPlayerCharacter::OnStopSprint()
 {
 	StartSprint = false;
+}
+
+void ASTUPlayerCharacter::ChangeCameraPerspective()
+{
 }
 
 

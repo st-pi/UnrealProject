@@ -123,24 +123,3 @@ void ASTURifleWeapon::SpawnFX(const FVector& TraceStart, const FVector& TraceEnd
 		TraceFXComponent->SetNiagaraVariableVec3(TraceTargetName, TraceEnd);
 	}
 }
-
-AController* ASTURifleWeapon::GetController()
-{
-	const auto Pawn = Cast<APawn>(GetOwner());
-	return Pawn ? Pawn->GetController() : nullptr;
-}
-
-
-void ASTURifleWeapon::Zoom(bool Enabled)
-{
-	const auto Controller = Cast<APlayerController>(GetController());
-	if (!Controller || !Controller->PlayerCameraManager)
-	{
-		return;
-	}
-	if (Enabled)
-	{
-		DefaultCameraFOV = Controller->PlayerCameraManager->GetFOVAngle();
-	}
-	Controller->PlayerCameraManager->SetFOV(Enabled ? FOVZoomAngle : DefaultCameraFOV);
-}
